@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module AASM::Core
   class Event
     include DslHelper
@@ -158,9 +156,27 @@ module AASM::Core
     end
 
     def invoke_callbacks(code, record, args)
-      Invoker.new(code, record, args)
-             .with_default_return_value(false)
-             .invoke
+      case code
+        when Symbol, String
+          unless record.respond_to?(code, true)
+            raise NoMethodError.new("NoMethodError: undefined method `#{code}' for #{record.inspect}:#{record.class}")
+          end
+          arity = record.__send__(:method, code.to_sym).arity
+          record.__send__(code, *(arity < 0 ? args : args[0...arity]))
+          true
+
+        when Proc
+          arity = code.arity
+          record.instance_exec(*(arity < 0 ? args : args[0...arity]), &code)
+          true
+
+        when Array
+          code.each {|a| invoke_callbacks(a, record, args)}
+          true
+
+        else
+          false
+      end
     end
   end
 end # AASM

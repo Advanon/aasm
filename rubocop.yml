@@ -1,6 +1,0 @@
-AllCops:
-  Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'tmp/**/*'
-    - 'gemfiles/**/*'
