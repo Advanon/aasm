@@ -53,21 +53,21 @@ module AASM
         # Check if concrete invoker may be invoked for a specified subject
 
         def may_invoke?
-          raise NameError, '"#may_invoke?" is not implemented'
+          raise NoMethodError, '"#may_invoke?" is not implemented'
         end
 
         ##
         # Log failed invoking
 
         def log_failure
-          raise NameError, '"#log_failure" is not implemented'
+          raise NoMethodError, '"#log_failure" is not implemented'
         end
 
         ##
         # Execute concrete invoker
 
         def invoke_subject
-          raise NameError, '"#invoke_subject" is not implemented'
+          raise NoMethodError, '"#invoke_subject" is not implemented'
         end
       end
     end
